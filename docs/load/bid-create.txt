@@ -1,0 +1,41 @@
+
+
+  █ THRESHOLDS 
+
+    http_req_duration{name:create_bid}
+    ✓ 'p(95)<500' p(95)=193.16ms
+
+    http_req_failed
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 300     155.912151/s
+    checks_succeeded...: 100.00% 300 out of 300
+    checks_failed......: 0.00%   0 out of 300
+
+    ✓ bid created (201)
+
+    CUSTOM
+    bids_created...................: 300    155.912151/s
+
+    HTTP
+    http_req_duration..............: avg=126.8ms  min=42.11ms med=125.19ms max=207.84ms p(90)=163.57ms p(95)=193.16ms
+      { expected_response:true }...: avg=126.8ms  min=42.11ms med=125.19ms max=207.84ms p(90)=163.57ms p(95)=193.16ms
+      { name:create_bid }..........: avg=126.8ms  min=42.11ms med=125.19ms max=207.84ms p(90)=163.57ms p(95)=193.16ms
+    http_req_failed................: 0.00%  0 out of 300
+    http_reqs......................: 300    155.912151/s
+
+    EXECUTION
+    iteration_duration.............: avg=127.14ms min=42.39ms med=125.61ms max=209.3ms  p(90)=164.25ms p(95)=193.44ms
+    iterations.....................: 300    155.912151/s
+    vus............................: 20     min=20       max=20
+    vus_max........................: 20     min=20       max=20
+
+    NETWORK
+    data_received..................: 304 kB 158 kB/s
+    data_sent......................: 172 kB 89 kB/s
+
+
+

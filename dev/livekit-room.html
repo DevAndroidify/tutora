@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tutora – local session room</title>
+  <style>
+    body { font: 15px/1.5 system-ui, sans-serif; max-width: 960px; margin: 24px auto; padding: 0 16px; }
+    label { display: block; margin-top: 10px; font-weight: 600; }
+    input, select { width: 100%; padding: 8px; box-sizing: border-box; font: inherit; }
+    button { margin: 14px 8px 0 0; padding: 9px 16px; font: inherit; cursor: pointer; }
+    #videos { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 8px; margin-top: 16px; }
+    video { width: 100%; background: #111; border-radius: 6px; }
+    pre { background: #f4f4f4; padding: 10px; white-space: pre-wrap; max-height: 220px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>Local session room (dev only)</h1>
+  <p>Open this page in two tabs: one with a <b>tutor</b> token, one with a paid <b>student</b> token.
+    The backend issues the LiveKit token; LiveKit then sends join/leave webhooks back to the API.</p>
+  <label>App <select id="app"><option value="student">student</option><option value="tutor">tutor</option></select></label>
+  <label>Access token (from POST /{app}/auth/login) <input id="token" placeholder="eyJ..." /></label>
+  <label>Session id <input id="session" placeholder="uuid" /></label>
+  <button id="join">Join</button><button id="leave" disabled>Leave</button>
+  <div>
+    <b>Low-bandwidth mode</b> (also switches automatically to audio only when LiveKit reports poor quality;
+    throttle the tab in DevTools &rarr; Network to try it):
+    <button data-mode="FULL_VIDEO">Full video</button>
+    <button data-mode="AUDIO_ONLY">Audio only</button>
+    <button data-mode="WHITEBOARD_ONLY">Whiteboard only</button>
+    <span id="mode">FULL_VIDEO</span>
+  </div>
+  <div id="videos"></div>
+  <h3>Log</h3>
+  <pre id="log"></pre>
+
+  <script src="https://unpkg.com/livekit-client@2.22.4/dist/livekit-client.umd.js"></script>
+  <script>
+    const { Room, RoomEvent, Track } = LivekitClient;
+    const log = (...a) => { document.getElementById('log').textContent += a.join(' ') + '\n'; };
+    let room;
+    const attach = (track, who) => {
+      if (track.kind !== Track.Kind.Video && track.kind !== Track.Kind.Audio) return;
+      const el = track.attach();
+      el.title = who;
+      document.getElementById('videos').appendChild(el);
+    };
+    document.getElementById('join').onclick = async () => {
+      const app = document.getElementById('app').value;
+      const res = await fetch(`/${app}/sessions/${document.getElementById('session').value.trim()}/join-token`, {
+        method: 'POST',
+        headers: { Authorization: 'Bearer ' + document.getElementById('token').value.trim() },
+      });
+      const body = await res.json();
+      if (!res.ok) return log('Join refused:', JSON.stringify(body.error));
+      log('Joining', body.room, 'as', body.identity);
+      room = new Room({ adaptiveStream: true, dynacast: true });
+      room.on(RoomEvent.TrackSubscribed, (track, _pub, p) => attach(track, p.identity));
+      room.on(RoomEvent.ParticipantConnected, (p) => log('joined:', p.identity));
+      room.on(RoomEvent.ParticipantDisconnected, (p) => log('left:', p.identity));
+      room.on(RoomEvent.Disconnected, () => log('disconnected'));
+      await room.connect(body.url, body.token);
+      await room.localParticipant.enableCameraAndMicrophone();
+      room.localParticipant.videoTrackPublications.forEach((pub) => pub.track && attach(pub.track, 'me'));
+      document.getElementById('leave').disabled = false;
+      log('Connected. Webhooks will mark the session LIVE.');
+    };
+    const api = (path, body) =>
+      fetch(path, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + document.getElementById('token').value.trim() },
+        body: JSON.stringify(body),
+      }).then((r) => r.json());
+    let currentMode = 'FULL_VIDEO';
+    /** Adapts media on the client and reports the switch to the backend. */
+    async function setMode(mode, reason) {
+      if (!room || mode === currentMode) return;
+      currentMode = mode;
+      document.getElementById('mode').textContent = mode;
+      await room.localParticipant.setCameraEnabled(mode === 'FULL_VIDEO');
+      // Stop receiving video too when bandwidth is the problem.
+      room.remoteParticipants.forEach((p) =>
+        p.videoTrackPublications.forEach((pub) => pub.setSubscribed(mode === 'FULL_VIDEO')),
+      );
+      const app = document.getElementById('app').value;
+      const session = document.getElementById('session').value.trim();
+      const kbps = navigator.connection?.downlink ? Math.round(navigator.connection.downlink * 1000) : undefined;
+      const saved = await api(`/${app}/sessions/${session}/mode-events`, { mode, reason, downlinkKbps: kbps });
+      log('Mode', mode, 'saved:', JSON.stringify(saved));
+    }
+    document.querySelectorAll('[data-mode]').forEach((b) => (b.onclick = () => setMode(b.dataset.mode, 'manual')));
+    const watchQuality = () =>
+      room.on(RoomEvent.ConnectionQualityChanged, (quality, participant) => {
+        if (participant.isLocal && quality === 'poor') setMode('AUDIO_ONLY', 'poor-connection');
+      });
+    const origJoin = document.getElementById('join').onclick;
+    document.getElementById('join').onclick = async () => {
+      await origJoin();
+      if (room) watchQuality();
+    };
+    document.getElementById('leave').onclick = async () => {
+      await room?.disconnect();
+      document.getElementById('leave').disabled = true;
+    };
+  </script>
+</body>
+</html>

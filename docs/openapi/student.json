@@ -1,0 +1,1640 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/student/auth/register": {
+      "post": {
+        "operationId": "StudentAuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Create a member account and sign in. The same account also works in the other member app.",
+        "tags": [
+          "student: auth"
+        ]
+      }
+    },
+    "/student/auth/login": {
+      "post": {
+        "operationId": "StudentAuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Sign in to this app. Rate-limited per IP and email.",
+        "tags": [
+          "student: auth"
+        ]
+      }
+    },
+    "/student/auth/refresh": {
+      "post": {
+        "operationId": "StudentAuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Exchange this app's refresh token for a new pair. Reusing an old token signs out that whole session.",
+        "tags": [
+          "student: auth"
+        ]
+      }
+    },
+    "/student/auth/logout": {
+      "post": {
+        "operationId": "StudentAuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "Revoke the session that owns this refresh token.",
+        "tags": [
+          "student: auth"
+        ]
+      }
+    },
+    "/student/me": {
+      "get": {
+        "operationId": "StudentMeController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "The signed-in learner.",
+        "tags": [
+          "student: account"
+        ]
+      }
+    },
+    "/student/requests": {
+      "post": {
+        "operationId": "StudentRequestsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a draft request. Contact details are hidden automatically.",
+        "tags": [
+          "student: learning requests"
+        ]
+      },
+      "get": {
+        "operationId": "StudentRequestsController_list",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "DRAFT",
+                "OPEN",
+                "POOLED",
+                "RESERVED",
+                "BOOKED",
+                "COMPLETED",
+                "EXPIRED",
+                "CANCELLED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your requests.",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/requests/{id}": {
+      "get": {
+        "operationId": "StudentRequestsController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "One of your requests.",
+        "tags": [
+          "student: learning requests"
+        ]
+      },
+      "patch": {
+        "operationId": "StudentRequestsController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRequestDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edit a draft.",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/requests/{id}/publish": {
+      "post": {
+        "operationId": "StudentRequestsController_publish",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Open the request for bids (DRAFT -> OPEN).",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/requests/{id}/cancel": {
+      "post": {
+        "operationId": "StudentRequestsController_cancel",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Cancel a draft or open request; open bids expire.",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/requests/{id}/attachments": {
+      "post": {
+        "operationId": "StudentRequestsController_attach",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AttachDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Attach a file you uploaded with a presigned URL.",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/requests/{id}/bids": {
+      "get": {
+        "operationId": "StudentRequestsController_bids",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "score",
+              "type": "string",
+              "enum": [
+                "score",
+                "price",
+                "time"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "All bids on your request, with prices and a score explanation.",
+        "tags": [
+          "student: learning requests"
+        ]
+      }
+    },
+    "/student/bids/{id}/accept": {
+      "post": {
+        "operationId": "StudentBookingController_accept",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Accept a bid. Reserves the tutor and starts the payment window; other bids are held.",
+        "tags": [
+          "student: booking and payment"
+        ]
+      }
+    },
+    "/student/sessions": {
+      "get": {
+        "operationId": "StudentBookingController_sessions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your bookings and sessions.",
+        "tags": [
+          "student: booking and payment"
+        ]
+      }
+    },
+    "/student/participants/{id}/payments": {
+      "post": {
+        "operationId": "StudentBookingController_pay",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key per logical request (8-255 chars). Retries must reuse it.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Start paying for a booking with UPI. Returns only the order id, amount, currency and public checkout config.",
+        "tags": [
+          "student: booking and payment"
+        ]
+      }
+    },
+    "/student/payments/{id}": {
+      "get": {
+        "operationId": "StudentBookingController_payment",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Payment status.",
+        "tags": [
+          "student: booking and payment"
+        ]
+      }
+    },
+    "/student/payments/{id}/confirm": {
+      "post": {
+        "operationId": "StudentBookingController_confirm",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfirmCheckoutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Checkout success callback. Verifies the signature and checks with the provider; webhooks stay authoritative.",
+        "tags": [
+          "student: booking and payment"
+        ]
+      }
+    },
+    "/student/sessions/{id}/join-token": {
+      "post": {
+        "operationId": "SessionsController_joinToken",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Short-lived LiveKit token for this session room (assigned tutor or paid learner only).",
+        "tags": [
+          "student: live sessions"
+        ]
+      }
+    },
+    "/student/sessions/{id}/attendance": {
+      "get": {
+        "operationId": "SessionsController_attendance",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Time each person spent in the room, from LiveKit events.",
+        "tags": [
+          "student: live sessions"
+        ]
+      }
+    },
+    "/student/sessions/{id}/consent": {
+      "post": {
+        "operationId": "SessionsController_consent",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Allow or refuse recording. Recording starts only when everyone allows it.",
+        "tags": [
+          "student: live sessions"
+        ]
+      }
+    },
+    "/student/sessions/{id}/recording": {
+      "get": {
+        "operationId": "SessionsController_recordingView",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recording status and a short-lived playback URL when ready.",
+        "tags": [
+          "student: live sessions"
+        ]
+      }
+    },
+    "/student/sessions/{id}/disputes": {
+      "post": {
+        "operationId": "StudentOutcomeController_dispute",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DisputeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Dispute a finished session within the dispute window. Freezes your payment.",
+        "tags": [
+          "student: after the session"
+        ]
+      }
+    },
+    "/student/sessions/{id}/review": {
+      "post": {
+        "operationId": "StudentOutcomeController_review",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Rate the tutor after attending.",
+        "tags": [
+          "student: after the session"
+        ]
+      }
+    },
+    "/student/quizzes": {
+      "get": {
+        "operationId": "StudentOutcomeController_quizzes",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Exit quizzes and 7-day rechecks you can take now. No answer keys.",
+        "tags": [
+          "student: after the session"
+        ]
+      }
+    },
+    "/student/quizzes/{id}/submit": {
+      "post": {
+        "operationId": "StudentOutcomeController_submit",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QuizAnswersDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Submit answers. Results never affect payments.",
+        "tags": [
+          "student: after the session"
+        ]
+      }
+    },
+    "/student/reports": {
+      "post": {
+        "operationId": "ReportsController_report",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Report unprofessional or unsafe behaviour. Reviewed by staff.",
+        "tags": [
+          "student: reports"
+        ]
+      }
+    },
+    "/student/notifications": {
+      "get": {
+        "operationId": "NotificationsController_list",
+        "parameters": [
+          {
+            "name": "unread",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your in-app notifications, newest first.",
+        "tags": [
+          "student: notifications"
+        ]
+      }
+    },
+    "/student/notifications/{id}/read": {
+      "post": {
+        "operationId": "NotificationsController_read",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mark a notification as read.",
+        "tags": [
+          "student: notifications"
+        ]
+      }
+    },
+    "/student/uploads/presign": {
+      "post": {
+        "operationId": "UploadsController_presign",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a URL to upload a request attachment (PNG, JPEG, WebP or PDF).",
+        "tags": [
+          "student: uploads"
+        ]
+      }
+    },
+    "/student/sessions/{id}/replay": {
+      "get": {
+        "operationId": "ReplayController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recording, transcript, notes, flashcards and final whiteboards.",
+        "tags": [
+          "student: replay and low bandwidth"
+        ]
+      }
+    },
+    "/student/sessions/{id}/replay/search": {
+      "get": {
+        "operationId": "ReplayController_search",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "integration by parts",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Search this session transcript; results carry timestamps to jump to.",
+        "tags": [
+          "student: replay and low bandwidth"
+        ]
+      }
+    },
+    "/student/sessions/{id}/mode-events": {
+      "post": {
+        "operationId": "ReplayController_mode",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModeEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Report a switch to FULL_VIDEO, AUDIO_ONLY or WHITEBOARD_ONLY.",
+        "tags": [
+          "student: replay and low bandwidth"
+        ]
+      }
+    },
+    "/student/sessions/{id}/whiteboard-snapshots/presign": {
+      "post": {
+        "operationId": "ReplayController_presign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload URL for a whiteboard image (PNG/WebP, 2 MB max).",
+        "tags": [
+          "student: replay and low bandwidth"
+        ]
+      }
+    },
+    "/student/sessions/{id}/whiteboard-snapshots": {
+      "post": {
+        "operationId": "ReplayController_snapshot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Save an uploaded whiteboard snapshot.",
+        "tags": [
+          "student: replay and low bandwidth"
+        ]
+      }
+    },
+    "/student/pools/invites": {
+      "get": {
+        "operationId": "PoolInvitesController_invites",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Invitations to join a cheaper group session. Other learners stay anonymous.",
+        "tags": [
+          "student: group sessions"
+        ]
+      }
+    },
+    "/student/pools/invites/{id}/accept": {
+      "post": {
+        "operationId": "PoolInvitesController_accept",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Join the group (your request becomes POOLED).",
+        "tags": [
+          "student: group sessions"
+        ]
+      }
+    },
+    "/student/pools/invites/{id}/decline": {
+      "post": {
+        "operationId": "PoolInvitesController_decline",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Decline the invitation.",
+        "tags": [
+          "student: group sessions"
+        ]
+      }
+    },
+    "/student/pools/{id}/bids": {
+      "get": {
+        "operationId": "StudentPoolBidsController_bids",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Offers on your group, with seat price, seat limits and score.",
+        "tags": [
+          "student: group sessions"
+        ]
+      }
+    },
+    "/student/pools/{id}/bids/{bidId}/accept": {
+      "post": {
+        "operationId": "StudentPoolBidsController_accept",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bidId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Accept the group offer and reserve your seat. Then pay via /student/participants/:id/payments.",
+        "tags": [
+          "student: group sessions"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Tutora Student API",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "asha@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 128,
+            "example": "correct-horse-battery"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Asha Verma"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "fullName"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "asha@example.com"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RefreshDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "CreateRequestDto": {
+        "type": "object",
+        "properties": {
+          "skillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "BEGINNER",
+              "INTERMEDIATE",
+              "ADVANCED"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "example": "How do I read candlestick patterns?"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "example": "Hindi"
+          },
+          "budgetHintPaise": {
+            "type": "number",
+            "description": "Budget hint in paise (₹500 = 50000)."
+          }
+        },
+        "required": [
+          "skillId",
+          "level",
+          "title",
+          "description"
+        ]
+      },
+      "UpdateRequestDto": {
+        "type": "object",
+        "properties": {
+          "skillId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "topicId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "BEGINNER",
+              "INTERMEDIATE",
+              "ADVANCED"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "example": "How do I read candlestick patterns?"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 4000
+          },
+          "preferredLanguage": {
+            "type": "string",
+            "example": "Hindi"
+          },
+          "budgetHintPaise": {
+            "type": "number",
+            "description": "Budget hint in paise (₹500 = 50000)."
+          }
+        }
+      },
+      "AttachDto": {
+        "type": "object",
+        "properties": {
+          "objectKey": {
+            "type": "string",
+            "description": "objectKey returned by POST /student/uploads/presign."
+          },
+          "fileName": {
+            "type": "string",
+            "example": "question.png"
+          }
+        },
+        "required": [
+          "objectKey",
+          "fileName"
+        ]
+      },
+      "ConfirmCheckoutDto": {
+        "type": "object",
+        "properties": {
+          "razorpay_order_id": {
+            "type": "string"
+          },
+          "razorpay_payment_id": {
+            "type": "string"
+          },
+          "razorpay_signature": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "razorpay_order_id",
+          "razorpay_payment_id",
+          "razorpay_signature"
+        ]
+      },
+      "ConsentDto": {
+        "type": "object",
+        "properties": {
+          "granted": {
+            "type": "boolean",
+            "description": "true = allow recording this session."
+          }
+        },
+        "required": [
+          "granted"
+        ]
+      },
+      "DisputeDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "TUTOR_ABSENT_OR_LATE",
+              "POOR_QUALITY",
+              "NOT_AS_DESCRIBED",
+              "TECHNICAL_ISSUES",
+              "MISCONDUCT",
+              "OTHER"
+            ]
+          },
+          "details": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ReviewDto": {
+        "type": "object",
+        "properties": {
+          "rating": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 5
+          },
+          "comment": {
+            "type": "string",
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "rating"
+        ]
+      },
+      "QuizAnswersDto": {
+        "type": "object",
+        "properties": {
+          "answers": {
+            "description": "Chosen option index per question, or [rating] for a self-check.",
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        },
+        "required": [
+          "answers"
+        ]
+      },
+      "ReportDto": {
+        "type": "object",
+        "properties": {
+          "subjectUserId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The member being reported."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "HARASSMENT",
+              "OFF_PLATFORM_PAYMENT",
+              "NO_SHOW",
+              "MISLEADING_CLAIMS",
+              "INAPPROPRIATE_CONTENT",
+              "FINANCIAL_TIPS",
+              "SPAM",
+              "OTHER"
+            ]
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "TUTOR_PROFILE",
+              "TUTOR_SKILL",
+              "LEARNING_REQUEST",
+              "BID",
+              "SESSION"
+            ],
+            "description": "What the report is about, if specific."
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "subjectUserId",
+          "reason"
+        ]
+      },
+      "PresignDto": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string",
+            "example": "image/png"
+          },
+          "sizeBytes": {
+            "type": "number",
+            "example": 120000
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ]
+      },
+      "ModeEventDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "FULL_VIDEO",
+              "AUDIO_ONLY",
+              "WHITEBOARD_ONLY"
+            ]
+          },
+          "downlinkKbps": {
+            "type": "number",
+            "description": "Client-measured downlink, kbps."
+          },
+          "reason": {
+            "type": "string",
+            "example": "poor-connection"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "SnapshotDto": {
+        "type": "object",
+        "properties": {
+          "objectKey": {
+            "type": "string",
+            "description": "objectKey from .../whiteboard-snapshots/presign"
+          },
+          "isFinal": {
+            "type": "boolean",
+            "description": "Mark as the final board for the replay."
+          }
+        },
+        "required": [
+          "objectKey"
+        ]
+      }
+    }
+  }
+}

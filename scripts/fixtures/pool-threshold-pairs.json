@@ -1,0 +1,22 @@
+[
+  { "a": "How do I identify a bullish engulfing candlestick pattern on daily charts", "b": "Identify bullish engulfing candlestick pattern on daily charts, I keep missing it", "same": true },
+  { "a": "Explain RSI divergence with examples", "b": "Examples of RSI divergence explained simply", "same": true },
+  { "a": "How to set a stop loss for swing trades", "b": "Where should I set stop loss on swing trades", "same": true },
+  { "a": "Integration by parts for x times e to the x", "b": "Integrate x e^x using integration by parts", "same": true },
+  { "a": "Limits of sin x over x as x tends to zero", "b": "Why is the limit of sin x over x equal to 1 as x tends to 0", "same": true },
+  { "a": "Color grading flat footage in DaVinci Resolve", "b": "DaVinci Resolve color grading for flat log footage", "same": true },
+  { "a": "Cutting long interviews faster in Premiere Pro", "b": "Faster way to cut long interview footage in Premiere Pro", "same": true },
+  { "a": "Hooks for Instagram reels in the first 3 seconds", "b": "Writing hooks for the first 3 seconds of reels", "same": true },
+  { "a": "Python list comprehension with conditions", "b": "List comprehension with if else conditions in Python", "same": true },
+  { "a": "Pivot tables to summarise sales by month in Excel", "b": "Excel pivot table summarising monthly sales", "same": true },
+  { "a": "How do I identify a bullish engulfing candlestick pattern", "b": "Position sizing and risk per trade for intraday futures", "same": false },
+  { "a": "Explain RSI divergence with examples", "b": "Reading a company balance sheet for debt", "same": false },
+  { "a": "Integration by parts for x e^x", "b": "Find the determinant of a 3 by 3 matrix", "same": false },
+  { "a": "Limits of sin x over x", "b": "Probability of two dice summing to seven", "same": false },
+  { "a": "Color grading in DaVinci Resolve", "b": "Audio noise removal for podcast recordings", "same": false },
+  { "a": "Hooks for Instagram reels", "b": "Growing a YouTube channel with long videos", "same": false },
+  { "a": "Python list comprehension", "b": "Centering a div with CSS flexbox", "same": false },
+  { "a": "Pivot tables in Excel", "b": "VLOOKUP returning N/A errors in Excel", "same": false },
+  { "a": "Stop loss for swing trades", "b": "Moving average crossover strategy for swing trades", "same": false },
+  { "a": "Candlestick patterns on daily charts", "b": "Candlestick patterns on weekly charts for long term investing", "same": false }
+]

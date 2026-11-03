@@ -1,0 +1,160 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1793705191753,
+      "tag": "0000_part00_extensions",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1793705192532,
+      "tag": "0001_part01_accounts_and_apps",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793705193295,
+      "tag": "0002_part01_audit_log_append_only",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1793705194346,
+      "tag": "0003_part02_skill_catalog_and_tutors",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1793707281200,
+      "tag": "0004_part03_trust_and_safety",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1793707282067,
+      "tag": "0005_part03_moderation_actions_append_only",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793707282973,
+      "tag": "0006_part04_learning_requests",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793707283938,
+      "tag": "0007_part05_sealed_bids",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793707284856,
+      "tag": "0008_part06_outbox_and_notifications",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793708935494,
+      "tag": "0009_part07_sessions_and_accepting_bids",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793708936393,
+      "tag": "0010_part08_ledger",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1793708937239,
+      "tag": "0011_part08_ledger_integrity",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1793708938149,
+      "tag": "0012_part09_payments_and_webhooks",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1793711825071,
+      "tag": "0013_part11_live_sessions_and_payment_settlement_columns",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1793711826196,
+      "tag": "0014_part12_disputes_and_payouts",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "7",
+      "when": 1793711827323,
+      "tag": "0015_part13_quizzes_mastery_reviews",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "7",
+      "when": 1793711828401,
+      "tag": "0016_part14_recording_consent",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "7",
+      "when": 1793713881409,
+      "tag": "0017_part15_16_transcripts_and_replay_assets",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "7",
+      "when": 1793713882350,
+      "tag": "0018_part15_transcript_search",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "7",
+      "when": 1793713883350,
+      "tag": "0019_part17_low_bandwidth",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "7",
+      "when": 1793713884304,
+      "tag": "0020_part18_request_pooling",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "7",
+      "when": 1793715777179,
+      "tag": "0021_part19_pool_bids_and_group_payments",
+      "breakpoints": true
+    }
+  ]
+}

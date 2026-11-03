@@ -1,0 +1,42 @@
+
+
+  █ THRESHOLDS 
+
+    http_req_duration{name:webhook}
+    ✓ 'p(95)<250' p(95)=43.89ms
+    ✓ 'max<5000' max=164.69ms
+
+    http_req_failed
+    ✓ 'rate<0.01' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 1000    825.69358/s
+    checks_succeeded...: 100.00% 1000 out of 1000
+    checks_failed......: 0.00%   0 out of 1000
+
+    ✓ 200
+
+    CUSTOM
+    webhook_duplicates_detected....: 500    412.84679/s
+
+    HTTP
+    http_req_duration..............: avg=29.9ms min=8.55ms med=27.88ms max=164.69ms p(90)=39.89ms p(95)=43.89ms
+      { expected_response:true }...: avg=29.9ms min=8.55ms med=27.88ms max=164.69ms p(90)=39.89ms p(95)=43.89ms
+      { name:webhook }.............: avg=29.9ms min=8.55ms med=27.88ms max=164.69ms p(90)=39.89ms p(95)=43.89ms
+    http_req_failed................: 0.00%  0 out of 1000
+    http_reqs......................: 1000   825.69358/s
+
+    EXECUTION
+    iteration_duration.............: avg=30.1ms min=9.56ms med=28.05ms max=166.13ms p(90)=40.09ms p(95)=44.12ms
+    iterations.....................: 1000   825.69358/s
+    vus............................: 25     min=25        max=25
+    vus_max........................: 25     min=25        max=25
+
+    NETWORK
+    data_received..................: 684 kB 564 kB/s
+    data_sent......................: 498 kB 412 kB/s
+
+
+

@@ -1,0 +1,21 @@
+{
+  "entity": "event",
+  "account_id": "acc_TESTFIXTURE0001",
+  "event": "payment.dispute.created",
+  "contains": [
+    "dispute"
+  ],
+  "payload": {
+    "dispute": {
+      "entity": {
+        "id": "disp_TESTFIXTURE0001",
+        "entity": "dispute",
+        "payment_id": "{{PAYMENT_ID}}",
+        "amount": {{AMOUNT}},
+        "currency": "INR",
+        "status": "open"
+      }
+    }
+  },
+  "created_at": 1793700000
+}

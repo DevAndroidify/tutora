@@ -1,0 +1,8 @@
+tutora_acceptance_conflicts_prevented_total 80
+tutora_bid_delivery_p95_seconds 0.463
+tutora_reconciliation_mismatches 0
+tutora_session_completion_ratio 1
+tutora_tutor_no_show_rate 0
+tutora_low_bandwidth_share 0
+tutora_pool_invite_acceptance_ratio 1
+tutora_quiz_pass_rate{kind="EXIT"} 1

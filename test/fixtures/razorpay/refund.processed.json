@@ -1,0 +1,58 @@
+{
+  "entity": "event",
+  "account_id": "acc_TESTFIXTURE0001",
+  "event": "refund.processed",
+  "contains": [
+    "refund",
+    "payment"
+  ],
+  "payload": {
+    "refund": {
+      "entity": {
+        "id": "rfnd_TESTFIXTURE0001",
+        "entity": "refund",
+        "amount": {{AMOUNT}},
+        "currency": "INR",
+        "payment_id": "{{PAYMENT_ID}}",
+        "status": "processed",
+        "speed_processed": "normal",
+        "created_at": 1793700000
+      }
+    },
+    "payment": {
+      "entity": {
+        "id": "{{PAYMENT_ID}}",
+        "entity": "payment",
+        "amount": {{AMOUNT}},
+        "currency": "INR",
+        "status": "refunded",
+        "order_id": "{{ORDER_ID}}",
+        "invoice_id": null,
+        "international": false,
+        "method": "upi",
+        "amount_refunded": 0,
+        "refund_status": null,
+        "captured": false,
+        "description": "Tutora test session",
+        "card_id": null,
+        "bank": null,
+        "wallet": null,
+        "vpa": "success@razorpay",
+        "email": "void@razorpay.com",
+        "contact": "+919000090000",
+        "notes": {
+          "participantId": "test"
+        },
+        "fee": 0,
+        "tax": 0,
+        "error_code": null,
+        "error_description": null,
+        "acquirer_data": {
+          "rrn": "000000000000"
+        },
+        "created_at": 1793700000
+      }
+    }
+  },
+  "created_at": 1793700000
+}

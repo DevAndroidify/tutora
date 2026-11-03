@@ -1,0 +1,20 @@
+# Local LiveKit server. Dev keys only (devkey / secret); never use outside local development.
+port: 7880
+bind_addresses:
+  - 0.0.0.0
+rtc:
+  tcp_port: 7881
+  udp_port: 7882
+  use_external_ip: false
+# Redis is required for Egress (recording) to talk to the server.
+redis:
+  address: redis:6379
+keys:
+  devkey: secret
+# Room, participant and egress events go to the API running on the host.
+webhook:
+  api_key: devkey
+  urls:
+    - http://host.docker.internal:3000/webhooks/livekit
+logging:
+  level: info

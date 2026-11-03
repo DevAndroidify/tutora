@@ -1,0 +1,89 @@
+name: tutora
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    environment:
+      POSTGRES_USER: tutora
+      POSTGRES_PASSWORD: tutora
+      POSTGRES_DB: tutora
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tutora -d tutora && pg_isready -U tutora -d tutora_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  redis:
+    image: redis:7.4-alpine
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  # MinIO no longer publishes images (Docker Hub and quay.io stopped serving them in Sept 2026).
+  # pgsty/silo is a community fork of MinIO with the same S3 API. Buckets are created by the app.
+  minio:
+    image: pgsty/silo:RELEASE.2026-10-26T00-00-00Z
+    command: ["server", "/data", "--console-address", ":9001"]
+    environment:
+      MINIO_ROOT_USER: tutora
+      MINIO_ROOT_PASSWORD: tutora-dev-secret
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ["CMD", "silo", "healthcheck", "live", "--quiet"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  livekit:
+    image: livekit/livekit-server:v1.13.11
+    # Dev keys devkey / secret (see docker/livekit/livekit.yaml). Never use them outside local development.
+    command: ["--config", "/etc/livekit.yaml"]
+    volumes:
+      - ./docker/livekit/livekit.yaml:/etc/livekit.yaml:ro
+    depends_on:
+      redis:
+        condition: service_healthy
+    # Lets LiveKit deliver webhooks to the API running on the host.
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "7882:7882/udp"
+
+  # Recording (Part 14). Large image with headless Chrome; start it with:
+  #   docker compose --profile recording up -d
+  egress:
+    image: livekit/egress:v1.15.0
+    profiles: ["recording"]
+    environment:
+      EGRESS_CONFIG_FILE: /etc/egress.yaml
+    volumes:
+      - ./docker/livekit/egress.yaml:/etc/egress.yaml:ro
+    cap_add:
+      - SYS_ADMIN
+    depends_on:
+      - livekit
+      - redis
+      - minio
+
+volumes:
+  postgres-data:
+  redis-data:
+  minio-data:

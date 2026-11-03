@@ -1,0 +1,1618 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/admin/moderation/cases": {
+      "get": {
+        "operationId": "AdminModerationController_list",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "OPEN",
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "ACTIONED",
+                "DISMISSED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Moderation queue, highest priority first.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      },
+      "post": {
+        "operationId": "AdminModerationController_open",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OpenCaseDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Open a case on a member manually.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/moderation/cases/{id}": {
+      "get": {
+        "operationId": "AdminModerationController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Case detail: reports, flags, actions and the member’s history.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/moderation/cases/{id}/assign": {
+      "post": {
+        "operationId": "AdminModerationController_assign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Assign the case to yourself.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/moderation/cases/{id}/actions": {
+      "post": {
+        "operationId": "AdminModerationController_act",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CaseActionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Decide the case: dismiss, warn, restrict, suspend or ban.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/moderation/users/{userId}/sanctions": {
+      "get": {
+        "operationId": "AdminModerationController_sanctions",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "A member’s sanctions, active and past.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/moderation/sanctions/{id}/lift": {
+      "post": {
+        "operationId": "AdminModerationController_lift",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LiftDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Lift an active sanction early.",
+        "tags": [
+          "admin: trust & safety"
+        ]
+      }
+    },
+    "/admin/payments": {
+      "get": {
+        "operationId": "AdminPaymentsController_list",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "INITIATED",
+                "VERIFIED",
+                "HELD",
+                "RELEASED",
+                "REFUNDED",
+                "FROZEN",
+                "FAILED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recent payments.",
+        "tags": [
+          "admin: payments and ledger"
+        ]
+      }
+    },
+    "/admin/ledger/balances": {
+      "get": {
+        "operationId": "AdminPaymentsController_balances",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Balance of every ledger account (paise).",
+        "tags": [
+          "admin: payments and ledger"
+        ]
+      }
+    },
+    "/admin/ledger/reconciliation": {
+      "get": {
+        "operationId": "AdminPaymentsController_reconcile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Debits vs credits across the whole ledger; lists any unbalanced transaction.",
+        "tags": [
+          "admin: payments and ledger"
+        ]
+      }
+    },
+    "/admin/metrics/low-bandwidth": {
+      "get": {
+        "operationId": "AdminSettlementController_lowBandwidthMetrics",
+        "parameters": [
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Share of sessions that switched to audio-only or whiteboard-only (default: last 30 days).",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/disputes": {
+      "get": {
+        "operationId": "AdminSettlementController_disputes",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "OPEN",
+                "RESOLVED_RELEASE",
+                "RESOLVED_REFUND"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Disputes, newest first.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/disputes/{id}/resolve": {
+      "post": {
+        "operationId": "AdminSettlementController_resolve",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResolveDisputeDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Decide a dispute: RELEASE pays the tutor, REFUND returns the money. Audited.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/payments/{id}/release": {
+      "post": {
+        "operationId": "AdminSettlementController_release",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Release held money to the tutor now. Audited.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/payments/{id}/refund": {
+      "post": {
+        "operationId": "AdminSettlementController_refund",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NoteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Refund held money to the learner. Audited.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/payouts": {
+      "post": {
+        "operationId": "AdminSettlementController_payout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PayoutDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Record a manual UPI payout already sent to a tutor. Audited.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/reconciliation": {
+      "get": {
+        "operationId": "AdminSettlementController_reconciliation",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Ledger vs payment records vs provider. Lists every mismatch.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/sessions/{id}/attendance": {
+      "get": {
+        "operationId": "AdminSettlementController_attendance",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Attendance for a session (for disputes).",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/sessions/{id}/recording": {
+      "get": {
+        "operationId": "AdminSettlementController_recordingView",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recording of a disputed session. Only while a dispute is open; audited.",
+        "tags": [
+          "admin: settlement"
+        ]
+      }
+    },
+    "/admin/auth/login": {
+      "post": {
+        "operationId": "AdminAuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Sign in to this app. Rate-limited per IP and email.",
+        "tags": [
+          "admin: auth"
+        ]
+      }
+    },
+    "/admin/auth/refresh": {
+      "post": {
+        "operationId": "AdminAuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Exchange this app's refresh token for a new pair. Reusing an old token signs out that whole session.",
+        "tags": [
+          "admin: auth"
+        ]
+      }
+    },
+    "/admin/auth/logout": {
+      "post": {
+        "operationId": "AdminAuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "Revoke the session that owns this refresh token.",
+        "tags": [
+          "admin: auth"
+        ]
+      }
+    },
+    "/admin/me": {
+      "get": {
+        "operationId": "AdminMeController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "The signed-in staff member.",
+        "tags": [
+          "admin: account"
+        ]
+      }
+    },
+    "/admin/tutors/profile-reviews": {
+      "get": {
+        "operationId": "AdminTutorsController_profileReviews",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "PENDING",
+              "type": "string",
+              "enum": [
+                "NOT_SUBMITTED",
+                "PENDING",
+                "VERIFIED",
+                "REJECTED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Tutor profiles by verification status (PENDING by default).",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/tutors/skill-reviews": {
+      "get": {
+        "operationId": "AdminTutorsController_skillReviews",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "PENDING",
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Skill claims by status (PENDING by default), with evidence links.",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/tutors/{userId}/verification/approve": {
+      "post": {
+        "operationId": "AdminTutorsController_approve",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveTutorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Approve a pending tutor profile. Audited.",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/tutors/{userId}/verification/reject": {
+      "post": {
+        "operationId": "AdminTutorsController_reject",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Reject a pending tutor profile with a reason. Audited.",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/tutors/{userId}/skills/{skillId}/approve": {
+      "post": {
+        "operationId": "AdminTutorsController_approveSkill",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Approve one skill claim. Audited.",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/tutors/{userId}/skills/{skillId}/reject": {
+      "post": {
+        "operationId": "AdminTutorsController_rejectSkill",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "skillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Reject one skill claim with a reason. Audited.",
+        "tags": [
+          "admin: tutor verification"
+        ]
+      }
+    },
+    "/admin/catalog/categories": {
+      "get": {
+        "operationId": "AdminCatalogController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "All categories, including inactive ones.",
+        "tags": [
+          "admin: catalog"
+        ]
+      },
+      "post": {
+        "operationId": "AdminCatalogController_createCategory",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create a category or sub-category. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/categories/{id}": {
+      "patch": {
+        "operationId": "AdminCatalogController_updateCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Rename, reorder or deactivate a category. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skills": {
+      "get": {
+        "operationId": "AdminCatalogController_skills",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Search all skills, including inactive ones.",
+        "tags": [
+          "admin: catalog"
+        ]
+      },
+      "post": {
+        "operationId": "AdminCatalogController_createSkill",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Add a skill. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skills/{id}": {
+      "patch": {
+        "operationId": "AdminCatalogController_updateSkill",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edit, move or deactivate a skill. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skills/{id}/topics": {
+      "post": {
+        "operationId": "AdminCatalogController_createTopic",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTopicDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Add a topic to a skill. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skill-suggestions": {
+      "get": {
+        "operationId": "AdminCatalogController_suggestions",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "PENDING",
+              "type": "string",
+              "enum": [
+                "PENDING",
+                "APPROVED",
+                "REJECTED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Skills suggested by tutors (PENDING by default).",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skill-suggestions/{id}/approve": {
+      "post": {
+        "operationId": "AdminCatalogController_approveSuggestion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApproveSuggestionDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Approve a suggestion; creates the skill. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    },
+    "/admin/catalog/skill-suggestions/{id}/reject": {
+      "post": {
+        "operationId": "AdminCatalogController_rejectSuggestion",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Reject a suggestion with a reason. Audited.",
+        "tags": [
+          "admin: catalog"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Tutora Admin API",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "OpenCaseDto": {
+        "type": "object",
+        "properties": {
+          "subjectUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subjectUserId",
+          "note"
+        ]
+      },
+      "CaseActionDto": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "DISMISS",
+              "WARN",
+              "RESTRICT_POSTING",
+              "RESTRICT_BIDDING",
+              "SUSPEND",
+              "BAN"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "Shown to the member for sanctions; kept in the audit log."
+          },
+          "durationDays": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 365,
+            "description": "Required for SUSPEND and RESTRICT_*."
+          }
+        },
+        "required": [
+          "action",
+          "reason"
+        ]
+      },
+      "LiftDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "ResolveDisputeDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          },
+          "outcome": {
+            "type": "string",
+            "enum": [
+              "RELEASE",
+              "REFUND"
+            ]
+          }
+        },
+        "required": [
+          "note",
+          "outcome"
+        ]
+      },
+      "NoteDto": {
+        "type": "object",
+        "properties": {
+          "note": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "note"
+        ]
+      },
+      "PayoutDto": {
+        "type": "object",
+        "properties": {
+          "tutorUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amountPaise": {
+            "type": "number",
+            "description": "Paise already sent to the tutor by UPI."
+          },
+          "reference": {
+            "type": "string",
+            "description": "UPI transaction reference (UTR)."
+          }
+        },
+        "required": [
+          "tutorUserId",
+          "amountPaise",
+          "reference"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "asha@example.com"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RefreshDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "ApproveTutorDto": {
+        "type": "object",
+        "properties": {
+          "badge": {
+            "type": "string",
+            "enum": [
+              "VERIFIED",
+              "EXPERT"
+            ]
+          }
+        },
+        "required": [
+          "badge"
+        ]
+      },
+      "RejectDto": {
+        "type": "object",
+        "properties": {
+          "reason": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "reason"
+        ]
+      },
+      "CreateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Fitness & Wellness"
+          },
+          "slug": {
+            "type": "string",
+            "example": "fitness-wellness"
+          },
+          "description": {
+            "type": "string"
+          },
+          "parentId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Makes this a sub-category."
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "UpdateCategoryDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "number"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateSkillDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "example": "Options Trading Basics"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "learnerNotice": {
+            "type": "string",
+            "description": "Shown to learners before booking."
+          }
+        },
+        "required": [
+          "categoryId",
+          "name"
+        ]
+      },
+      "UpdateSkillDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "learnerNotice": {
+            "type": "object",
+            "nullable": true,
+            "description": "null removes the notice."
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "CreateTopicDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Option Greeks"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "ApproveSuggestionDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Override the suggested name."
+          },
+          "slug": {
+            "type": "string"
+          },
+          "categoryId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Move to another category."
+          },
+          "learnerNotice": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

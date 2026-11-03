@@ -1,0 +1,44 @@
+
+
+  █ THRESHOLDS 
+
+    accept_unexpected
+    ✓ 'count==0' count=0
+
+    accept_won
+    ✓ 'count==20' count=20
+
+    http_req_duration{name:accept_bid}
+    ✓ 'p(95)<1000' p(95)=245.02ms
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 100     341.512749/s
+    checks_succeeded...: 100.00% 100 out of 100
+    checks_failed......: 0.00%   0 out of 100
+
+    ✓ 201 or 409
+
+    CUSTOM
+    accept_conflict_409............: 80    273.210199/s
+    accept_unexpected..............: 0     0/s
+    accept_won.....................: 20    68.30255/s
+
+    HTTP
+    http_req_duration..............: avg=160.09ms min=49.85ms med=170.41ms max=248.86ms p(90)=242.34ms p(95)=245.02ms
+      { expected_response:true }...: avg=160.09ms min=49.85ms med=170.41ms max=248.86ms p(90)=242.34ms p(95)=245.02ms
+      { name:accept_bid }..........: avg=160.09ms min=49.85ms med=170.41ms max=248.86ms p(90)=242.34ms p(95)=245.02ms
+    http_req_failed................: 0.00% 0 out of 100
+    http_reqs......................: 100   341.512749/s
+
+    EXECUTION
+    iteration_duration.............: avg=165.47ms min=50.67ms med=184.05ms max=252.1ms  p(90)=244.31ms p(95)=247.62ms
+    iterations.....................: 100   341.512749/s
+
+    NETWORK
+    data_received..................: 89 kB 304 kB/s
+    data_sent......................: 42 kB 143 kB/s
+
+
+

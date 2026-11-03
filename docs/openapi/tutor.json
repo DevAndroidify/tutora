@@ -1,0 +1,1511 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/tutor/auth/register": {
+      "post": {
+        "operationId": "TutorAuthController_register",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "summary": "Create a member account and sign in. The same account also works in the other member app.",
+        "tags": [
+          "tutor: auth"
+        ]
+      }
+    },
+    "/tutor/auth/login": {
+      "post": {
+        "operationId": "TutorAuthController_login",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Sign in to this app. Rate-limited per IP and email.",
+        "tags": [
+          "tutor: auth"
+        ]
+      }
+    },
+    "/tutor/auth/refresh": {
+      "post": {
+        "operationId": "TutorAuthController_refresh",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Exchange this app's refresh token for a new pair. Reusing an old token signs out that whole session.",
+        "tags": [
+          "tutor: auth"
+        ]
+      }
+    },
+    "/tutor/auth/logout": {
+      "post": {
+        "operationId": "TutorAuthController_logout",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": ""
+          }
+        },
+        "summary": "Revoke the session that owns this refresh token.",
+        "tags": [
+          "tutor: auth"
+        ]
+      }
+    },
+    "/tutor/me": {
+      "get": {
+        "operationId": "TutorAccountController_me",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "The signed-in member and whether they have a tutor profile yet.",
+        "tags": [
+          "tutor: account"
+        ]
+      }
+    },
+    "/tutor/profile": {
+      "get": {
+        "operationId": "TutorAccountController_getProfile",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your tutor profile with every skill claim and its review status.",
+        "tags": [
+          "tutor: account"
+        ]
+      },
+      "put": {
+        "operationId": "TutorAccountController_upsertProfile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertTutorProfileDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Create (become a tutor) or update your tutor profile.",
+        "tags": [
+          "tutor: account"
+        ]
+      }
+    },
+    "/tutor/profile/verification": {
+      "post": {
+        "operationId": "TutorAccountController_submit",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Submit your profile for staff verification.",
+        "tags": [
+          "tutor: account"
+        ]
+      }
+    },
+    "/tutor/skills/{skillId}": {
+      "put": {
+        "operationId": "TutorAccountController_upsertSkill",
+        "parameters": [
+          {
+            "name": "skillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertTutorSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "List a skill you teach, with evidence. Each skill is reviewed by staff.",
+        "tags": [
+          "tutor: account"
+        ]
+      },
+      "delete": {
+        "operationId": "TutorAccountController_removeSkill",
+        "parameters": [
+          {
+            "name": "skillId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Stop offering a skill.",
+        "tags": [
+          "tutor: account"
+        ]
+      }
+    },
+    "/tutor/skill-suggestions": {
+      "get": {
+        "operationId": "TutorAccountController_listSuggestions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Skills you suggested for the catalog.",
+        "tags": [
+          "tutor: account"
+        ]
+      },
+      "post": {
+        "operationId": "TutorAccountController_suggest",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestSkillDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Suggest a skill that is missing from the catalog.",
+        "tags": [
+          "tutor: account"
+        ]
+      }
+    },
+    "/tutor/earnings": {
+      "get": {
+        "operationId": "TutorMarketplaceController_earnings",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "What you have earned, what is still held, and payouts recorded.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/sessions": {
+      "get": {
+        "operationId": "TutorMarketplaceController_sessions",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your booked sessions (pending payment, scheduled, past).",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/requests": {
+      "get": {
+        "operationId": "TutorMarketplaceController_browse",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "skillId",
+            "required": false,
+            "in": "query",
+            "description": "Must be one of your approved skills.",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "level",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BEGINNER",
+                "INTERMEDIATE",
+                "ADVANCED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Open requests in skills you are approved to teach, with bid counts.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/requests/{id}": {
+      "get": {
+        "operationId": "TutorMarketplaceController_request",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "One request: details, bid count and only your own bid.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/requests/{id}/bids": {
+      "post": {
+        "operationId": "TutorMarketplaceController_bid",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBidDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Place a sealed bid. One active bid per request.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/bids": {
+      "get": {
+        "operationId": "TutorMarketplaceController_myBids",
+        "parameters": [
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SUBMITTED",
+                "ACCEPTED",
+                "HELD",
+                "WITHDRAWN",
+                "EXPIRED",
+                "REJECTED"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your bids.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/bids/{id}": {
+      "patch": {
+        "operationId": "TutorMarketplaceController_update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBidDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Edit a submitted bid.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/bids/{id}/withdraw": {
+      "post": {
+        "operationId": "TutorMarketplaceController_withdraw",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Withdraw a submitted bid.",
+        "tags": [
+          "tutor: marketplace"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/join-token": {
+      "post": {
+        "operationId": "SessionsController_joinToken",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Short-lived LiveKit token for this session room (assigned tutor or paid learner only).",
+        "tags": [
+          "tutor: live sessions"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/attendance": {
+      "get": {
+        "operationId": "SessionsController_attendance",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Time each person spent in the room, from LiveKit events.",
+        "tags": [
+          "tutor: live sessions"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/consent": {
+      "post": {
+        "operationId": "SessionsController_consent",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConsentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Allow or refuse recording. Recording starts only when everyone allows it.",
+        "tags": [
+          "tutor: live sessions"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/recording": {
+      "get": {
+        "operationId": "SessionsController_recordingView",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recording status and a short-lived playback URL when ready.",
+        "tags": [
+          "tutor: live sessions"
+        ]
+      }
+    },
+    "/tutor/reports": {
+      "post": {
+        "operationId": "ReportsController_report",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReportDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Report unprofessional or unsafe behaviour. Reviewed by staff.",
+        "tags": [
+          "tutor: reports"
+        ]
+      }
+    },
+    "/tutor/notifications": {
+      "get": {
+        "operationId": "NotificationsController_list",
+        "parameters": [
+          {
+            "name": "unread",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": false,
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Your in-app notifications, newest first.",
+        "tags": [
+          "tutor: notifications"
+        ]
+      }
+    },
+    "/tutor/notifications/{id}/read": {
+      "post": {
+        "operationId": "NotificationsController_read",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Mark a notification as read.",
+        "tags": [
+          "tutor: notifications"
+        ]
+      }
+    },
+    "/tutor/uploads/presign": {
+      "post": {
+        "operationId": "UploadsController_presign",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Get a URL to upload a short intro video/audio for a bid.",
+        "tags": [
+          "tutor: uploads"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/replay": {
+      "get": {
+        "operationId": "ReplayController_get",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Recording, transcript, notes, flashcards and final whiteboards.",
+        "tags": [
+          "tutor: replay and low bandwidth"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/replay/search": {
+      "get": {
+        "operationId": "ReplayController_search",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "example": "integration by parts",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Search this session transcript; results carry timestamps to jump to.",
+        "tags": [
+          "tutor: replay and low bandwidth"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/mode-events": {
+      "post": {
+        "operationId": "ReplayController_mode",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModeEventDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Report a switch to FULL_VIDEO, AUDIO_ONLY or WHITEBOARD_ONLY.",
+        "tags": [
+          "tutor: replay and low bandwidth"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/whiteboard-snapshots/presign": {
+      "post": {
+        "operationId": "ReplayController_presign",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PresignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Upload URL for a whiteboard image (PNG/WebP, 2 MB max).",
+        "tags": [
+          "tutor: replay and low bandwidth"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/whiteboard-snapshots": {
+      "post": {
+        "operationId": "ReplayController_snapshot",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SnapshotDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Save an uploaded whiteboard snapshot.",
+        "tags": [
+          "tutor: replay and low bandwidth"
+        ]
+      }
+    },
+    "/tutor/sessions/{id}/notes": {
+      "put": {
+        "operationId": "TutorNotesController_notes",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TutorNotesDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Write the session notes yourself (shown instead of generated notes).",
+        "tags": [
+          "tutor: replay"
+        ]
+      }
+    },
+    "/tutor/pools": {
+      "get": {
+        "operationId": "TutorPoolsController_list",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Groups you can bid on (your approved skills). Members stay anonymous.",
+        "tags": [
+          "tutor: group sessions"
+        ]
+      }
+    },
+    "/tutor/pools/{id}/bids": {
+      "post": {
+        "operationId": "TutorPoolsController_bid",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePoolBidDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "security": [
+          {
+            "bearer": []
+          }
+        ],
+        "summary": "Sealed group bid: seat price, min and max seats, proposed time.",
+        "tags": [
+          "tutor: group sessions"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Tutora Tutor API",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "RegisterDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "asha@example.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 128,
+            "example": "correct-horse-battery"
+          },
+          "fullName": {
+            "type": "string",
+            "example": "Asha Verma"
+          }
+        },
+        "required": [
+          "email",
+          "password",
+          "fullName"
+        ]
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "asha@example.com"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "RefreshDto": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ]
+      },
+      "UpsertTutorProfileDto": {
+        "type": "object",
+        "properties": {
+          "headline": {
+            "type": "string",
+            "maxLength": 120,
+            "example": "Ex-NSE analyst teaching charting for beginners"
+          },
+          "bio": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "experienceYears": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 60
+          },
+          "languages": {
+            "example": [
+              "English",
+              "Hindi"
+            ],
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "payoutUpiId": {
+            "type": "string",
+            "example": "tutor.name@okaxis",
+            "description": "Private. Used for payouts."
+          }
+        }
+      },
+      "UpsertTutorSkillDto": {
+        "type": "object",
+        "properties": {
+          "experienceYears": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 60
+          },
+          "summary": {
+            "type": "string",
+            "minLength": 20,
+            "maxLength": 1000,
+            "description": "What you teach and how."
+          },
+          "evidenceLinks": {
+            "description": "Up to 5 https links: portfolio, certificates, channel, published work.",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "summary",
+          "evidenceLinks"
+        ]
+      },
+      "SuggestSkillDto": {
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 80,
+            "example": "Options Trading Basics"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500
+          }
+        },
+        "required": [
+          "categoryId",
+          "name"
+        ]
+      },
+      "CreateBidDto": {
+        "type": "object",
+        "properties": {
+          "seatPricePaise": {
+            "type": "number",
+            "description": "Price per seat in paise (₹499 = 49900).",
+            "example": 49900
+          },
+          "proposedStartAt": {
+            "type": "string",
+            "example": "2026-11-05T14:30:00.000Z"
+          },
+          "durationMinutes": {
+            "type": "number",
+            "minimum": 15,
+            "maximum": 240,
+            "example": 60
+          },
+          "approachText": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Required unless approachMediaKey is given."
+          },
+          "approachMediaKey": {
+            "type": "string",
+            "description": "objectKey from POST /tutor/uploads/presign (about 30 seconds)."
+          }
+        },
+        "required": [
+          "seatPricePaise",
+          "proposedStartAt",
+          "durationMinutes"
+        ]
+      },
+      "UpdateBidDto": {
+        "type": "object",
+        "properties": {
+          "seatPricePaise": {
+            "type": "number",
+            "description": "Price per seat in paise (₹499 = 49900).",
+            "example": 49900
+          },
+          "proposedStartAt": {
+            "type": "string",
+            "example": "2026-11-05T14:30:00.000Z"
+          },
+          "durationMinutes": {
+            "type": "number",
+            "minimum": 15,
+            "maximum": 240,
+            "example": 60
+          },
+          "approachText": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Required unless approachMediaKey is given."
+          },
+          "approachMediaKey": {
+            "type": "string",
+            "description": "objectKey from POST /tutor/uploads/presign (about 30 seconds)."
+          }
+        }
+      },
+      "ConsentDto": {
+        "type": "object",
+        "properties": {
+          "granted": {
+            "type": "boolean",
+            "description": "true = allow recording this session."
+          }
+        },
+        "required": [
+          "granted"
+        ]
+      },
+      "ReportDto": {
+        "type": "object",
+        "properties": {
+          "subjectUserId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "The member being reported."
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "HARASSMENT",
+              "OFF_PLATFORM_PAYMENT",
+              "NO_SHOW",
+              "MISLEADING_CLAIMS",
+              "INAPPROPRIATE_CONTENT",
+              "FINANCIAL_TIPS",
+              "SPAM",
+              "OTHER"
+            ]
+          },
+          "entityType": {
+            "type": "string",
+            "enum": [
+              "USER",
+              "TUTOR_PROFILE",
+              "TUTOR_SKILL",
+              "LEARNING_REQUEST",
+              "BID",
+              "SESSION"
+            ],
+            "description": "What the report is about, if specific."
+          },
+          "entityId": {
+            "type": "string"
+          },
+          "details": {
+            "type": "string",
+            "maxLength": 2000
+          }
+        },
+        "required": [
+          "subjectUserId",
+          "reason"
+        ]
+      },
+      "PresignDto": {
+        "type": "object",
+        "properties": {
+          "contentType": {
+            "type": "string",
+            "example": "image/png"
+          },
+          "sizeBytes": {
+            "type": "number",
+            "example": 120000
+          }
+        },
+        "required": [
+          "contentType",
+          "sizeBytes"
+        ]
+      },
+      "ModeEventDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "FULL_VIDEO",
+              "AUDIO_ONLY",
+              "WHITEBOARD_ONLY"
+            ]
+          },
+          "downlinkKbps": {
+            "type": "number",
+            "description": "Client-measured downlink, kbps."
+          },
+          "reason": {
+            "type": "string",
+            "example": "poor-connection"
+          }
+        },
+        "required": [
+          "mode"
+        ]
+      },
+      "SnapshotDto": {
+        "type": "object",
+        "properties": {
+          "objectKey": {
+            "type": "string",
+            "description": "objectKey from .../whiteboard-snapshots/presign"
+          },
+          "isFinal": {
+            "type": "boolean",
+            "description": "Mark as the final board for the replay."
+          }
+        },
+        "required": [
+          "objectKey"
+        ]
+      },
+      "TutorNotesDto": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "keyPoints": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "summary",
+          "keyPoints"
+        ]
+      },
+      "CreatePoolBidDto": {
+        "type": "object",
+        "properties": {
+          "seatPricePaise": {
+            "type": "number",
+            "description": "Price per seat in paise (₹499 = 49900).",
+            "example": 49900
+          },
+          "proposedStartAt": {
+            "type": "string",
+            "example": "2026-11-05T14:30:00.000Z"
+          },
+          "durationMinutes": {
+            "type": "number",
+            "minimum": 15,
+            "maximum": 240,
+            "example": 60
+          },
+          "approachText": {
+            "type": "string",
+            "maxLength": 2000,
+            "description": "Required unless approachMediaKey is given."
+          },
+          "approachMediaKey": {
+            "type": "string",
+            "description": "objectKey from POST /tutor/uploads/presign (about 30 seconds)."
+          },
+          "minSeats": {
+            "type": "number",
+            "minimum": 2,
+            "example": 2,
+            "description": "The session runs only if at least this many learners pay."
+          },
+          "maxSeats": {
+            "type": "number",
+            "minimum": 2,
+            "example": 5,
+            "description": "At most this many learners can pay (<= POOL_MAX_SEATS)."
+          }
+        },
+        "required": [
+          "seatPricePaise",
+          "proposedStartAt",
+          "durationMinutes",
+          "minSeats",
+          "maxSeats"
+        ]
+      }
+    }
+  }
+}

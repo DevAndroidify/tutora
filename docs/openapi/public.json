@@ -1,0 +1,243 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "HealthController_get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Checks PostgreSQL, Redis, MinIO and LiveKit. Returns 503 when any is down.",
+        "tags": [
+          "health"
+        ]
+      }
+    },
+    "/public/categories": {
+      "get": {
+        "operationId": "PublicCatalogController_categories",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Active categories with their sub-categories.",
+        "tags": [
+          "public: catalog"
+        ]
+      }
+    },
+    "/public/skills": {
+      "get": {
+        "operationId": "PublicCatalogController_skills",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "q",
+            "required": false,
+            "in": "query",
+            "description": "Text to match in skill name or description.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "categoryId",
+            "required": false,
+            "in": "query",
+            "description": "Top-level categories include sub-categories.",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Search active skills by text and/or category.",
+        "tags": [
+          "public: catalog"
+        ]
+      }
+    },
+    "/public/skills/{idOrSlug}": {
+      "get": {
+        "operationId": "PublicCatalogController_skill",
+        "parameters": [
+          {
+            "name": "idOrSlug",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "One skill with its category and topics. Accepts id or slug.",
+        "tags": [
+          "public: catalog"
+        ]
+      }
+    },
+    "/public/tutors": {
+      "get": {
+        "operationId": "PublicTutorsController_list",
+        "parameters": [
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "default": 20,
+              "type": "number"
+            }
+          },
+          {
+            "name": "offset",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 0,
+              "default": 0,
+              "type": "number"
+            }
+          },
+          {
+            "name": "skillId",
+            "required": false,
+            "in": "query",
+            "description": "Only tutors approved for this skill.",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Verified tutors, optionally only those approved for a skill.",
+        "tags": [
+          "public: tutors"
+        ]
+      }
+    },
+    "/public/tutors/{userId}": {
+      "get": {
+        "operationId": "PublicTutorsController_get",
+        "parameters": [
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Public profile of a verified tutor (approved skills only).",
+        "tags": [
+          "public: tutors"
+        ]
+      }
+    },
+    "/webhooks/livekit": {
+      "post": {
+        "operationId": "WebhooksController_livekit",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "LiveKit room, participant and egress events (signed JWT in Authorization).",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    },
+    "/webhooks/{provider}": {
+      "post": {
+        "operationId": "WebhooksController_receive",
+        "parameters": [
+          {
+            "name": "provider",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Payment provider webhooks (fake, razorpay). Returns 2xx fast.",
+        "tags": [
+          "webhooks"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Tutora Public API",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "securitySchemes": {
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {}
+  }
+}

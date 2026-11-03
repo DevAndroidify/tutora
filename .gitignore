@@ -1,0 +1,11 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.local
+*.log
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+.pnp.*
+*:Zone.Identifier
